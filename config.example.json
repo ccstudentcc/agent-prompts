@@ -1,0 +1,8 @@
+{
+  "codexRoot": "C:\\Users\\chenpeng\\.codex",
+  "publishedCodexDir": ".codex",
+  "excludeSkillNames": [
+    ".system"
+  ],
+  "includeSystemSkills": false
+}

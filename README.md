@@ -82,6 +82,7 @@ Not included here by default:
 - [`AGENTS.md`](AGENTS.md): repo-specific publishing and maintenance rules
 - [`ARCHITECTURE.md`](ARCHITECTURE.md): source-of-truth and update flow
 - [`docs/maintenance.md`](docs/maintenance.md): refresh and review checklist
+- [`config.example.json`](config.example.json): committed example for the local sync configuration
 - [`scripts/sync-public-codex.ps1`](scripts/sync-public-codex.ps1): repeatable sync script for long-term updates
 
 ## Long-Term Maintenance
@@ -91,10 +92,17 @@ This repository is set up to be maintained over time rather than refreshed manua
 The intended path is:
 
 1. preview the local-to-public sync with `.\scripts\sync-public-codex.ps1 -PlanOnly`
-2. run the sync when the plan looks right
-3. review `git status` and diffs
-4. update inventory docs if the public surface changed
-5. commit and push
+2. optionally preview file operations with `.\scripts\sync-public-codex.ps1 -WhatIf`
+3. run the sync when the plan looks right
+4. review `git status` and diffs
+5. update inventory docs if the public surface changed
+6. commit and push
+
+By default the script reads repo-local `config.json`, which stays local and is ignored by Git. The committed template is [`config.example.json`](config.example.json).
+
+Use `-ConfigPath` to point at another JSON file when you want a different publish target or source Codex home.
+
+The script also supports `-RepoRoot`, `-PublishedCodexDir`, `-CodexRoot`, and `-AsJson` for more reusable Windows/pwsh workflows. Command-line parameters override values loaded from `config.json` or a file passed with `-ConfigPath`.
 
 The architecture and maintenance workflow are documented in [ARCHITECTURE.md](ARCHITECTURE.md) and [docs/maintenance.md](docs/maintenance.md).
 
