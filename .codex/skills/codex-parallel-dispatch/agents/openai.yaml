@@ -1,0 +1,6 @@
+interface:
+  display_name: "Codex Parallel Dispatch"
+  short_description: "Route explicit Codex parallel subagent work safely"
+  default_prompt: "Use $codex-parallel-dispatch to decide what should stay with the main agent and what can be split into safe parallel subagent work."
+policy:
+  allow_implicit_invocation: true
