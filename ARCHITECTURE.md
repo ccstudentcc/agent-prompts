@@ -41,6 +41,11 @@ This repository is downstream from those paths. It should not become an independ
 
 - `references/`: external or comparative material that informed the published content
 
+### 6. Research layer
+
+- `research/`: repo-authored research deliverables about agent instruction design, maintenance, and comparative practice
+- `references/*.md`: source registers and evidence maps for those research deliverables
+
 ## Excluded Layers
 
 The following stay out of scope unless manually reviewed and intentionally published:
@@ -58,7 +63,8 @@ The intended maintenance flow is:
 1. Refresh from the local `.codex` source paths with `scripts/sync-public-codex.ps1`
 2. Review the resulting Git diff
 3. Update inventory or boundary docs if the public surface changed
-4. Commit and push only after the published scope is confirmed
+4. If new research artifacts were added, update the root docs so `research/` and `references/` remain discoverable
+5. Commit and push only after the published scope is confirmed
 
 ## Design Choice
 

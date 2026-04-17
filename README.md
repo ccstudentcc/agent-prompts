@@ -78,12 +78,24 @@ Not included here by default:
 - [`.codex/AGENTS.md`](.codex/AGENTS.md): published global Codex working rules
 - [`.codex/agents/`](.codex/agents/README.md): public copies and index of local agent roles
 - [`.codex/skills/`](.codex/skills/README.md): public copies and index of non-system local skills
-- [`references/`](references/andrej-karpathy-skills/CLAUDE.md): reference documents that informed the published rules
+- [`research/`](research/agents-md_best-practices.md): research deliverables on agent instruction design and maintenance
+- [`references/`](references/agents-md_sources.md): source registers and reference material that informed the published rules and research
 - [`AGENTS.md`](AGENTS.md): repo-specific publishing and maintenance rules
 - [`ARCHITECTURE.md`](ARCHITECTURE.md): source-of-truth and update flow
 - [`docs/maintenance.md`](docs/maintenance.md): refresh and review checklist
 - [`config.example.json`](config.example.json): committed example for the local sync configuration
 - [`scripts/sync-public-codex.ps1`](scripts/sync-public-codex.ps1): repeatable sync script for long-term updates
+
+## Research Layer
+
+This repository can also hold scoped research artifacts when they help explain, compare, or refine the published agent-facing rules.
+
+The current research package includes:
+
+- [research/agents-md_best-practices.md](research/agents-md_best-practices.md): a structured review of global `AGENTS.md` norms, repository-level update guidance, and cross-tool examples
+- [references/agents-md_sources.md](references/agents-md_sources.md): the supporting source register, organized by papers, official docs, and repository cases
+
+These files are complementary material. They are not treated as source-of-truth copies from the local Codex home, and they should stay clearly separated from the published `.codex/` snapshot.
 
 ## Long-Term Maintenance
 
