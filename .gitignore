@@ -1,0 +1,13 @@
+.env
+.env.*
+tmp/
+*.log
+
+# OS metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor metadata
+.idea/
+.vscode/
