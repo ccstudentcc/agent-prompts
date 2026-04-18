@@ -2,6 +2,8 @@
 
 These rules apply to `skills/agents-md-improver/`.
 
+- This skill directory is repo-owned in this checkout, so durable edits for `agents-md-improver` should happen here rather than under `C:\Users\chenpeng\.codex\skills\`.
+
 ## Eval Fixtures
 
 - Treat `evals/files/**/AGENTS.md` as fixture inputs, not live repository guidance; edit them only when changing the eval scenario itself.

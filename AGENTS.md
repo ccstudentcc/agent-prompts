@@ -9,6 +9,6 @@
 - Keep the committed sync template in repo-root `config.example.json`, keep local `config.json` ignored, and use `-ConfigPath` for alternate publish profiles.
 - The sync script is intentionally non-destructive: it overwrites same-name published files, but does not delete repo copies just because the local source changed.
 - Treat `.codex/skills/` as append-preserving by default; repo-only skill directories stay until they are removed manually after review.
-- If the public inventory changes, update `README.md`, `.codex/agents/README.md`, `.codex/skills/README.md`, and `ARCHITECTURE.md` in the same pass.
+- If the public inventory changes, update `README.md`, `ARCHITECTURE.md`, and the relevant published-layer index docs for the affected subtree in the same pass.
 - Review binary asset diffs carefully before commit, especially fonts and images under `.codex/skills/`.
 - Before commit, check `git status --short` and `git diff --cached --name-only` to confirm the snapshot matches the intended public boundary.

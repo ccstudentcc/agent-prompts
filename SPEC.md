@@ -2,28 +2,27 @@
 
 ## Goal
 
-Produce a research-backed markdown deliverable on `AGENTS.md` best practices, example patterns, and repository-level update governance.
+Use the local `agents-md-improver` workflow to tighten the active `AGENTS.md` hierarchy in this repository so each layer carries only the smallest durable rules that belong there.
 
 ## In Scope
 
-- research best practices for global `AGENTS.md`
-- compare `AGENTS.md` with adjacent instruction files such as `CLAUDE.md` and repository custom instruction docs
-- collect and assess evidence from papers, authoritative blogs, and strong open-source repositories
-- write the main findings under `research/`
-- place source tracking material under `references/`
-- distinguish direct evidence from inference when papers do not discuss `AGENTS.md` explicitly
+- inspect the real instruction chain for this checkout: repo root, `.codex/`, and relevant subdirectories
+- decide which guidance belongs at the repository root versus narrower local `AGENTS.md` files
+- trim or rewrite stale root guidance when a concrete path or document assumption is no longer true
+- add minimal subdirectory `AGENTS.md` files only where local ownership or sync behavior is genuinely non-obvious
+- keep task docs aligned with the current AGENTS-maintenance round
 
 ## Out Of Scope
 
-- changing the repository's published `.codex` snapshot
-- rewriting existing public showcase docs outside the research deliverable unless needed for task tracking
-- inventing unsupported academic claims about `AGENTS.md`
-- mirroring large external source content into the repository
+- changing the user-home source of truth under `C:\Users\chenpeng\.codex\`
+- rewriting eval fixture `AGENTS.md` files unless the eval scenarios themselves need to change
+- broad README or architecture rewrites unless required to complete an AGENTS boundary move cleanly
+- unrelated code, sync-script, or published-snapshot cleanup
 
 ## Acceptance
 
-- a research markdown document exists under `research/`
-- a companion reference document exists under `references/`
-- conclusions are organized by evidence priority: papers, authoritative blogs, then repository examples
-- the document clearly separates direct support, indirect support, and engineering inference
-- the research includes actionable guidance for global `AGENTS.md`, example templates, and a repository-level update SOP
+- the active AGENTS layers are clearly separated into inherited guidance and local delta
+- root `AGENTS.md` stays concise and avoids stale or overly specific routing that no longer matches the repo
+- any newly added subdirectory `AGENTS.md` files provide real local execution value instead of duplicating parent rules
+- `agents-md-improver` local guidance remains compatible with the parent layers
+- verification includes concrete file reads and `git status --short`
