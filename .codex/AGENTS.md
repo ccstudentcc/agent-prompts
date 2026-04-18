@@ -25,6 +25,7 @@ When instructions conflict, Safety rules take precedence over all others.
 - Do not overwrite existing files with `Set-Content` or `Out-File` without explaining the change first.
 - Prefer read-only inspection. Explain risk before any file-modifying action.
 - Never hardcode secrets. Use environment variables.
+- When verifying secrets or credentialed config, never print actual values; report only key names, presence flags, lengths, or redacted snippets.
 - Never revert changes outside the current task scope unless explicitly requested.
 - If unexpected unrelated changes appear, stop and ask.
 
@@ -34,15 +35,17 @@ When instructions conflict, Safety rules take precedence over all others.
 - Always specify `-Encoding utf8` with `Out-File`. Never use `>` redirection for file output.
 - Follow the repo's line ending convention. Check `.gitattributes` before creating new files.
 - Use `rg` for search. Do not use `grep`, `find`, or `Select-String`.
-- Temp files: never use `$env:TEMP` or `$env:TMP` in tests or scripts.
-- Always use a project-local `tmp/` directory instead (`$repoRoot/tmp/`).
-- Create `tmp/` if missing, ensure it is ignored, and never clean it up automatically.
+- On Windows PowerShell, avoid shell-style globs in `rg` path arguments; use `-g` filters or separate commands, and prefer `rg -F` for literal paths or tricky strings.
+- Temp files: use a project-local `tmp/` directory instead of `$env:TEMP` or `$env:TMP`.
+- Create `tmp/` if missing, keep it ignored, and never clean it up automatically.
 
 ## Working Style
-- State your interpretation before proceeding. Do not silently assume.
-- For non-trivial tasks, state key assumptions explicitly before editing.
-- If multiple plausible interpretations lead to materially different work, stop and ask instead of picking one silently.
-- If ambiguity is low-risk, proceed with the smallest reasonable assumption and state it.
+- State your interpretation and key assumptions before non-trivial edits.
+- If ambiguity could materially change the work, stop and ask; otherwise proceed with the smallest reasonable assumption and say so.
+- Prefer live local evidence over memory: inspect files, artifacts, logs, configs, and task docs before browsing, theorizing, or making current-state claims.
+- After an interrupted, aborted, or partially failed turn, re-check repo status and re-read critical instructions, task docs, skills, and artifacts before continuing edits.
+- When the user names a skill, workflow, or reviewer loop, explicitly apply it; if the user points to a concrete local skill path, read it directly. If it is unavailable or only a manual fallback is possible, say that plainly and do not imply the tool or agent actually ran.
+- When continuing work in an existing repository, read the nearest active `AGENTS.md` and current task-control docs before editing.
 - Skim recent commits when available, then locate relevant files before writing code.
 - For complex or multi-session tasks, create `SPEC.md`, `IMPLEMENTATION_PLAN.md`, and `TASK_STATUS.md` before coding.
 - Make the smallest change that correctly solves the problem.
@@ -70,10 +73,10 @@ When instructions conflict, Safety rules take precedence over all others.
 - Function-level doc comments only when the interface is complex or non-trivial.
 
 ## Validation
-- Define success in verifiable terms before implementing when the task has multiple steps.
-- Prefer a brief `step -> verify` plan for non-trivial work.
+- For non-trivial tasks, define success in verifiable terms and prefer a brief `step -> verify` plan before editing.
 - Run the smallest relevant tests, linters, or checks after changes.
 - Do not claim success without running a verification step, or disclose exactly what was skipped.
+- If meaningful validation is blocked by interpreter mismatch, missing dependencies, environment issues, or unavailable services, say so explicitly and downgrade the claim to syntax/static or limited verification.
 - Do not disable tests to make a task pass.
 - When fixing a bug, prefer reproducing it with a focused check before and after the change when practical.
 
@@ -84,11 +87,14 @@ When instructions conflict, Safety rules take precedence over all others.
 - Before committing, verify no secrets are staged with `git diff --cached`.
 - Branch format: `feat/*`, `fix/*`, `agent/*`. Commit format: `type(scope): message`.
 - Explain why in commit messages, not just what.
+- In dirty worktrees, stage explicit file paths instead of `git add .`; verify staged files with `git diff --cached --name-only`.
 - Keep `.gitignore` up to date. At minimum exclude: `.env`, `tmp/`, `*.log`, build artifacts, and editor or OS metadata.
 - `.git` writes may fail under sandbox with `index.lock` permission errors; for `git add`, `commit`, or `push`, prefer an escalation request over assuming the lock file is stale.
 
 ## Project Files
 Create and maintain these files when needed.
+
+- When adding a new top-level content layer or durable document set, update `README.md`, `ARCHITECTURE.md`, and task docs in the same pass if navigation or ownership changed.
 
 ### For humans
 - `README.md` - Project overview, installation, usage
@@ -99,23 +105,22 @@ Create and maintain these files when needed.
 - Do not repeat content already in `README.md` or `ARCHITECTURE.md`.
 - Keep it under 150 lines; split into subdirectory `AGENTS.md` files when larger.
 - Place critical rules early.
-- Update proactively when a mistake happened that a rule would have prevented.
-- Update proactively when too many files were read to find the right one; add routing guidance.
-- Update proactively when the same review feedback appears more than once.
-- Update proactively when a project-specific convention or validation command is discovered.
+- Update proactively when repeated mistakes, repeated review feedback, avoidable file-search churn, or newly discovered repo-specific conventions/validation commands reveal a durable rule or routing hint.
 - Keep each rule to one or two lines.
 - Tell the user in one sentence what was added and why.
 
 ### For task tracking
-- `SPEC.md` - Target behavior, constraints, acceptance scope
-- `IMPLEMENTATION_PLAN.md` - Stages, milestones, validation steps, status
-- `TASK_STATUS.md` - Progress, decisions, blockers
 - For complex or multi-session tasks, create all three before starting.
 - Review `SPEC.md` and `TASK_STATUS.md` at session start.
-- Update `TASK_STATUS.md` at every session boundary, not retrospectively.
+- Keep these files as coordination surfaces, not append-only transcripts.
+- Keep `SPEC.md` focused on the target contract: goals, non-goals, scope, constraints, and verifiable acceptance criteria.
+- Keep `IMPLEMENTATION_PLAN.md` focused on stages, current stage status, validation strategy, sequencing risks, and dependencies.
+- Keep `TASK_STATUS.md` focused on the current handoff: current truth, latest verified results, open items, caveats, and last verification.
+- Rewrite stale sections when the truth changes; do not preserve long chronological logs unless the history changes future decisions.
+- Move reusable procedures, runbooks, and long benchmark analysis into `docs/` or another repo-owned reference instead of bloating task tracking files.
+- Update `TASK_STATUS.md` at every session boundary with what is true now and what should happen next, not retrospectively.
 
 ## MCP
-- Use MCP only when the task requires external context unavailable in the repo.
-- Do not use MCP for tasks solvable with local files and shell commands.
+- Use MCP only when local files and shell commands cannot supply the needed context.
 - If a required MCP server is unavailable, tell the user instead of proceeding without it.
 - When inspecting Codex or MCP configuration, reveal only the minimum necessary lines and redact any secret as `[REDACTED_SECRET]`.
