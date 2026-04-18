@@ -118,8 +118,13 @@ function Copy-DirectoryContents {
     $children = Get-ChildItem -LiteralPath $SourceDirectory -Force
     foreach ($child in $children) {
         $destinationPath = Join-Path $DestinationDirectory $child.Name
+        if ($child.PSIsContainer) {
+            Copy-DirectoryContents -SourceDirectory $child.FullName -DestinationDirectory $destinationPath
+            continue
+        }
+
         if ($PSCmdlet.ShouldProcess($destinationPath, "Copy $($child.FullName)")) {
-            Copy-Item -LiteralPath $child.FullName -Destination $destinationPath -Recurse -Force
+            Copy-Item -LiteralPath $child.FullName -Destination $destinationPath -Force
         }
     }
 }
